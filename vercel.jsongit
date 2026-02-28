@@ -1,0 +1,1 @@
+Flask\nrequests {\n  "version": 2,\n  "builds": [{ "src": "app.py", "use": "@vercel/python" }],\n  "routes": [{ "src": "/(.*)", "dest": "app.py" }]\n} remote add origin https://github.com/Hosam3/my-app.gitgit add .
